@@ -66,7 +66,8 @@ https://ouconnect.oracle.com/
 
 
 
-
+Enter in user name: 98762526.user01 ... 98762526.user30
+Enter in password: 7MTGUYY62r (same for all users)
 
 
 
