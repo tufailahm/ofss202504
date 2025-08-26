@@ -390,3 +390,352 @@ FROM   employees;
 
 
 
+-----------
+
+DDL - auto committed
+DML - commit/rollback
+
+
+select count(employee_id) from employees;
+
+-----
+select department_id, count(employee_id) from employees 
+group by department_id;
+
+select department_id, count(employee_id) 
+from employees
+where department_id in (90,60)
+group by department_id 
+order by department_id desc
+
+
+select department_id, manager_id, count(employee_id) from employees 
+group by department_id,manager_id;
+
+select department_id, count(employee_id) from employees 
+group by department_id,manager_id;
+
+---Having clause
+select department_id, manager_id, count(employee_id) 
+from employees
+where department_id in (90,60,100) and manager_id > 100  
+group by department_id ,manager_id
+having count(employee_id) > 3
+order by department_id desc
+
+
+-----------Print job_id wise hiring 
+salary > 12000
+manager_id (100,101,102,103)
+count of employees in each job should be >4
+
+select job_id, count(employee_id) from employees 
+where salary > 10000 and manager_id in (100,101,102,103) group by job_id having count(employee_id) > 2
+order by job_id;
+
+-------------------------------
+---JOINS
+
+
+--NATURAL JOIN
+
+select * from departments;
+select * from employees;
+
+select employee_id, first_name, department_name from employees natural join departments;
+
+select employee_id, first_name, department_name,manager_id ,department_id from employees natural join departments;
+
+-----------USING
+------Use the USING clause to match only one column when more than one column matches.
+
+select employee_id, first_name, department_name,departments.manager_id ,department_id from employees join departments
+using (department_id)
+
+select employee_id, first_name, department_name,manager_id ,employees.department_id from employees join departments
+using (manager_id)
+
+
+----ON clause
+
+SELECT e.employee_id, e.last_name, e.department_id, 
+       d.department_id, d.location_id
+FROM   employees e JOIN departments d
+ON     e.manager_id = d.manager_id
+
+
+
+--3 way joins
+SELECT employee_id, city, department_name
+FROM   employees e 
+JOIN   departments d
+ON     d.department_id = e.department_id 
+JOIN   locations l
+ON     d.location_id = l.location_id;
+
+
+---outer joins
+
+select employee_id, first_name, department_name
+from employees e join departments d
+on e.department_id = d.department_id;
+
+--LEFT OUTER JOIN
+
+select employee_id, first_name, department_name
+from employees e LEFT OUTER join departments d
+on e.department_id = d.department_id;
+
+--RIGHT OUTER JOIN
+
+select employee_id, first_name, department_name
+from employees e RIGHT OUTER join departments d
+on e.department_id = d.department_id;
+
+
+--FULL  OUTER JOIN
+
+select employee_id, first_name, department_name
+from employees e FULL OUTER join departments d
+on e.department_id = d.department_id;
+
+
+---------SELF JOIN
+
+Employee - Neena reports to Manager - Steven
+
+---Hands on 
+
+select 'Employee - ' || employee.first_name || ' reports to Manager - ' || manager.first_name
+from employees employee join employees manager 
+on employee.manager_id = manager.employee_id;
+
+
+select * from customer;
+
+select * from branch;
+
+select * from account;
+
+select * from trandetails;
+
+select * from loan;
+
+
+------------------SUBQUERY
+
+select employee_id, first_name , department_id from employees
+where department_id = ( select department_id from employees where lower(first_name) = 'neena')
+
+
+select employee_id, first_name , department_id from employees
+where department_id = ( select department_id from employees where lower(first_name) = 'neena')
+
+-----Minimum salary
+
+select min(salary) from employees;
+
+----Miminum salary in each department
+select department_id , min(salary) from employees group by department_id;
+
+---Print name, email , department_id, salary - Miminum salary in each department
+
+select first_name, email, department_id, salary from employees ;
+
+
+select first_name, email, department_id, salary from employees where (department_id,salary) IN
+(select department_id , min(salary) from employees group by department_id);
+
+select employee_id, first_name, email, department_id, salary from employees where (department_id,salary) IN
+(select department_id , max(salary) from employees group by department_id)
+order by department_id;
+
+
+select employee_id, first_name, email, department_id, salary from employees where (department_id,salary) IN
+(select department_id , max(salary) from employees group by department_id)
+order by department_id;
+
+
+update employees set salary = 12000 where employee_id = 205;
+
+commit;
+
+-------------null VALUES IN SUBQUERY
+
+SELECT emp.last_name
+FROM   employees emp
+WHERE  emp.employee_id NOT IN
+                           (SELECT mgr.manager_id
+                            FROM   employees mgr);
+
+
+----EMPLOYEE WHO ARE MAANGERS
+SELECT emp.last_name
+FROM   employees emp
+WHERE  emp.employee_id  IN
+                           (SELECT mgr.manager_id
+                            FROM   employees mgr);
+
+-------eMPLOYEE WHO ARE NOT MAANGERS
+
+SELECT emp.last_name
+FROM   employees emp
+WHERE  emp.employee_id  not IN
+                           (SELECT mgr.manager_id
+                            FROM   employees mgr );
+
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE MANAGER_ID IS NULL;
+
+DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID = 100;
+
+
+Create table retired_Employees
+as
+select * from employees where employee_id in (103,104,105)
+
+select * from retired_Employees     -- 102,103,104
+
+delete from employees where employee_id =104;
+------------UNION
+
+select * from retired_Employees 
+union
+select * from Employees 
+
+
+
+
+------------UNION ALL
+
+select * from retired_Employees 
+union all
+select * from Employees 
+
+
+------------INTERSECT
+
+
+select * from retired_Employees 
+intersect
+select * from Employees 
+
+
+---------MINUS
+
+
+select * from retired_Employees 
+minus
+select * from Employees 
+
+
+
+
+------------------------------------------------------DDL
+
+--Table with column level constraints
+create table products1
+(
+    productId number constraint pkIddd primary key,
+    productName varchar2(2) constraint uniPName unique,
+    quantity number constraint chkQtyttt check ( quantity > 0 ),
+    price number constraint chkPriceeeee check (price >= 0),
+    reviews varchar2(20) default 'Good'
+)
+
+create table orders1
+( 
+            orderId number,
+            orderdate date,
+            city varchar(20),
+            productId number,
+            constraint pkOrdIddd primary key (orderId),
+            -- orderDate should greater than sysdate
+            constraint fkpIddd foreign key(productId) references products1(productId) on delete cascade
+            
+)
+
+--Table with table level constraints
+create table products2
+(
+    productId number,
+    ssnCode number ,
+    productName varchar2(2) not null,
+    quantity number,
+    price number,
+    constraint pkSSnCodeProduct primary key(productId,ssnCode),
+    constraint chkQtyproduct2 check (quantity > 0),
+    constraint chkQtyproduct3 check (quantity < 100)
+)
+
+insert into products1  values(11,'Gl',4,100,default);
+
+
+---FK
+
+
+select * from products1;
+select * from orders1;
+
+insert into orders1 values(98181,sysdate,'Pune',11);
+insert into orders1 values(98182,sysdate,'Pune',11);
+insert into orders1 values(98183,sysdate,'Pune',11);
+insert into orders1 values(98184,sysdate,'Pune',11);
+
+delete from products1 where productId = 11;
+
+
+
+CREATE TABLE orders100 (
+    order_id NUMBER PRIMARY KEY,
+    orderdate DATE,
+    customer_id NUMBER,
+    -- other columns
+    CONSTRAINT chk_orderdate_future CHECK (orderdate > SYSDATE)
+);
+
+
+
+
+ALTER TABLE employees READ ONLY;
+
+
+ALTER TABLE employees READ WRITE;
+
+
+
+drop table employees;
+
+
+
+
+describe employees;
+
+insert into employees (employee_id, last_name,email,hire_date,job_id)values (1999,'Aadhya','aadhyaa',sysdate,'IT_PROG');
+
+select * from employees;
+
+update employees set (salary, commission_pct, manager_id, department_id) 
+= (select salary, commission_pct, manager_id, department_id from employees where first_name = 'Neena')
+where employee_id = 1999;
+
+
+--Give employee a raise of 20% if there department id is same as Neena's department id
+
+update employees set salary = salary + 0.2*salary 
+where department_id = (select department_id from employees where first_name = 'Neena')
+
+
+create table abcd
+(
+pid number
+)
+
+
+
+
+
+
+
+
+
+
