@@ -767,6 +767,88 @@ Access specifiers in java
 
 
 
+You can define the main method in different ways:
+public static void main (String[] args) { }
+public static void main (String args[]) { }
+public static void main (String... args) { }
+There is no practical difference between these approaches; however, the first one is probably the most common.
+
+
+
+
+Javadoc
+
+
+javadoc -d docs -sourcepath src -subpackages .
+
+
+C:\Users\shubhshr\Desktop\Java\loan-app>javadoc -d docs src/main/java/org/example/Employee.java
+
+
+E:\Trainings\2025\6..OFSS\ofss202504\java_projects\loan-app\src\main\java>javadoc -d docs com.training
+
+
+byte	 -1
+short	-2
+*int	-4
+long	-8
+
+
+float	-4
+*double	-8
+
+
+implcit and explicit
+
+int num1=100;		-W
+short num2=100;		-W
+long num3 = 90.8;		-
+float num4 = 98.9f;		
+
+
+byte b1=10;
+byte b2=20;
+byte b3 = b1 + b2;
+
+
+package com.training;
+
+public class DataTypeDemo {
+
+    int num1;
+   num1=10;
+   
+    public static void main(String[] args) {
+	 num1++;
+	System.out.println(num1);
+
+    }
+}
+
+
+String is immutable	it cannot be changed
+
+
+String name1 = "neha";
+name1 = "riya";
+String name2 = "neha";
+String name3 = new String("neha");	
+String name4 = "neha";
+
+System.out.println(name1==name3);		//false
+System.out.println(name2==name3);		//false
+System.out.println(name2==name4);		//true
+
+
+String password = "neha@123";
+String hashPassword = password.intern();
+
+
+
+
+
+
+
 
 
 
