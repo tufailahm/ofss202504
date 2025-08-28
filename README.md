@@ -840,10 +840,6 @@ System.out.println(name2==name3);		//false
 System.out.println(name2==name4);		//true
 
 
-String password = "neha@123";
-String hashPassword = password.intern();
-
-
 
 
 
