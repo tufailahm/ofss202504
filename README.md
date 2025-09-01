@@ -847,6 +847,352 @@ System.out.println(name2==name4);		//true
 
 
 
+public class Main {
+  public static void main(String[] args) {
+    Main myObj = new Main();
+    System.out.println(myObj instanceof Main); // returns true
+  }
+}
+
+
+
+
+-------
+
+
+class Product
+{
+	private int productId;
+
+	
+}
+
+
+
+Let's break down your code step by step and analyze **why the instance block of class `Z`** is getting called **after** the **constructor of `W`**.
+
+Here’s your code again for reference:
+
+```java
+package com.training.util;
+
+class W {
+    public W() {
+        System.out.println("4. W 1 constructor");
+    }
+    public W(String name) {
+        System.out.println("4. W 2 constructor");
+    }
+    static {
+        System.out.println("#1. W static block");
+    }
+}
+
+public class Z extends W {
+    {
+        System.out.println("5. instance block");
+    }
+    static {
+        System.out.println("#2. Z static block");
+    }
+    public Z(String name) {
+        super(name);
+        System.out.println("6. Z constructor");
+    }
+
+    public static void main(String args[]) {
+        System.out.println("#3. In main");
+        new Z("YY");
+    }
+}
+```
+
+---
+
+## **Step 1: Class Loading Sequence**
+
+When you run `Z.main()`:
+
+1. **Class W** is loaded first → static block executes:
+
+   ```
+   #1. W static block
+   ```
+2. **Class Z** is loaded next → static block executes:
+
+   ```
+   #2. Z static block
+   ```
+3. The `main()` method executes:
+
+   ```
+   #3. In main
+   ```
+
+---
+
+## **Step 2: Object Creation Process**
+
+You are calling:
+
+```java
+new Z("YY");
+```
+
+Now the object creation process involves **both** the **parent class (`W`)** and the **child class (`Z`)**.
+Java follows a strict **order**:
+
+---
+
+### **Step 3: Constructor Execution Flow**
+
+#### **Step 3.1: Memory Allocation**
+
+* JVM allocates memory for the new `Z` object.
+* All instance variables of **W** and **Z** are set to their default values.
+
+---
+
+#### **Step 3.2: Parent Constructor Call**
+
+* The **first statement** inside `Z`'s constructor is:
+
+```java
+super(name);
+```
+
+* This means **before doing anything in `Z`**, Java calls `W(String)` constructor.
+* This prints:
+
+  ```
+  4. W 2 constructor
+  ```
+
+---
+
+#### **Step 3.3: Instance Initializers of Z**
+
+* **After** the parent constructor completes, **before** executing the rest of `Z`’s constructor,
+  **instance blocks** and **instance variable initializations** of **Z** are executed.
+
+* That’s why:
+
+  ```
+  5. instance block
+  ```
+
+  is printed **after** the `W` constructor.
+
+---
+
+#### **Step 3.4: Z Constructor Body**
+
+* Finally, the body of `Z(String)` constructor executes:
+
+  ```
+  6. Z constructor
+  ```
+
+---
+
+## **Final Output Order**
+
+```
+#1. W static block      ← W loaded
+#2. Z static block      ← Z loaded
+#3. In main             ← main() started
+4. W 2 constructor      ← super(name)
+5. instance block       ← Z's instance block
+6. Z constructor        ← Z's constructor body
+```
+
+---
+
+## **Why Z's Instance Block Runs After W's Constructor**
+
+Because **Java guarantees** the following **object construction order**:
+
+1. **Parent class instance variables** → initialized.
+2. **Parent class instance blocks** → executed.
+3. **Parent constructor** → executed.
+4. **Child class instance variables** → initialized.
+5. **Child class instance blocks** → executed.
+6. **Child constructor** → executed.
+
+Since your **Z** class instance block belongs to the **child**,
+it **must** wait until the **parent (`W`) constructor** completes.
+
+---
+
+## **Quick Rule to Remember**
+
+> **Instance blocks** run **after the parent constructor** but **before the child constructor body**.
+
+---
+
+Do you want me to make a **diagram** showing the **complete execution flow** for this program?
+It’ll make the sequence crystal clear. Should I?
+
+
+In Java, **all variables declared in an interface are implicitly**:
+
+```java
+public static final
+```
+
+That means:
+
+* **`public`** → accessible from anywhere
+* **`static`** → belongs to the interface, not to instances
+* **`final`** → cannot be reassigned once initialized
+
+Let's break this down step by step with **why** they are **static** and **final**.
+
+---
+
+## **1. Interface variables are `static`**
+
+### **Reason**
+
+* Interfaces **cannot have instance variables** because they **cannot have constructors** (until Java 8 introduced default methods, but still no constructors).
+* Since you **cannot create objects** of an interface directly, **instance variables don’t make sense**.
+* Hence, interface variables **must belong to the interface itself**, not to any object → **they are `static`**.
+
+### **Example**
+
+```java
+interface MyInterface {
+    int VALUE = 100;  // implicitly public static final
+}
+
+class Test {
+    public static void main(String[] args) {
+        System.out.println(MyInterface.VALUE);  // Accessed via interface name
+    }
+}
+```
+
+**Output:**
+
+```
+100
+```
+
+---
+
+## **2. Interface variables are `final`**
+
+### **Reason**
+
+* An interface is meant to define **constants** or **contract values**, **not modifiable states**.
+* If variables were **not final**, each implementing class could **change their values**, breaking the contract.
+* By making them **final**, Java ensures the value **cannot be changed** after initialization.
+
+### **Example**
+
+```java
+interface MyInterface {
+    int MAX = 50; // public static final by default
+}
+
+class Test implements MyInterface {
+    public void print() {
+        // MAX = 60;  ❌  Compilation Error: cannot assign a value to final variable MAX
+        System.out.println(MAX);
+    }
+}
+```
+
+---
+
+## **3. Interface variables are also `public`**
+
+### **Reason**
+
+* Interfaces define a **contract** that must be visible to all implementing classes.
+* If they were `private` or `protected`, implementing classes couldn't access them.
+* Therefore, all interface variables are **always public**.
+
+---
+
+## **4. Memory Behavior**
+
+Since interface variables are **`static`**, they are **stored in the method area** (class-level memory), **not in object heap memory**.
+Thus, there is **only one copy** of each interface constant, shared by all implementing classes.
+
+---
+
+## **5. Summary Table**
+
+| **Property** | **Reason**                                      |
+| ------------ | ----------------------------------------------- |
+| `static`     | Belongs to the interface, not to objects.       |
+| `final`      | Cannot be changed; ensures constant values.     |
+| `public`     | Must be accessible to all implementing classes. |
+
+---
+
+## **6. Quick Demo**
+
+```java
+interface Config {
+    String APP_NAME = "MyApp";  // public static final
+    int MAX_USERS = 100;       // public static final
+}
+
+class Demo implements Config {
+    public void show() {
+        System.out.println(APP_NAME);   // ✅ Allowed
+        System.out.println(MAX_USERS);  // ✅ Allowed
+    }
+}
+```
+
+**Output:**
+
+```
+MyApp
+100
+```
+
+---
+
+## **Key Takeaway**
+
+> In Java, **interface variables are always constants** →
+> **`public static final`** → shared, immutable, and globally accessible.
+
+---
+
+If you want, I can also show you **how Java internally treats interface variables** by **decompiling bytecode** using `javap`.
+It will prove that the compiler **automatically adds** `public static final`.
+
+Do you want me to show you that?
+
+
+
+
+
+
+
+
+Collection<I>
+
+
+
+<I>Set(no dupli)			List		
+		
+
+Classes
+)
+HashSet (no norder)		ArrayList	( not thread safe)
+LinkedHashSet (order)		LinkedList
+TreeSet (sorted)			Vector ( thread safe)		
+
+
+
+
+Comparator		- compareTo	java.lang
 
 
 
