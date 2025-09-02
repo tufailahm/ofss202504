@@ -1,0 +1,22 @@
+package com.training.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class OracleDBConnection {
+
+    public static Connection getConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");       //loading the driver
+            //creating the connection
+            conn = DriverManager.getConnection
+                    ("jdbc:oracle:thin:@10.120.85.85:1521:free","system","root");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        //returning the connection
+        return conn;
+    }
+}
