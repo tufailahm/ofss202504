@@ -1,9 +1,6 @@
 package collectiondemos;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProductMain {
 
@@ -30,7 +27,10 @@ public class ProductMain {
             System.out.println("2. Sort by Name");
             System.out.println("3. Sort by Price");
             System.out.println("4. Sort by Quantity");
-            System.out.println("5. Exit");
+            System.out.println("5. Sort by Quantity - Desc");
+            System.out.println("6. Sort by ID - Desc");
+
+            System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             int choice = sc.nextInt();
 
@@ -38,6 +38,20 @@ public class ProductMain {
             switch (choice) {
                 case 1:
                     Collections.sort(productsList, new IDComparator());
+                    Music music = new Music() {
+                        @Override
+                        public void play() {
+                            System.out.println("Ting");
+                        }
+
+                        @Override
+                        public void stop() {
+                            System.out.println("Tong");
+                        }
+                    };
+                    music.play();
+                    music.stop();
+
                     break;
                 case 2:
                     Collections.sort(productsList, new NameComparator());
@@ -47,6 +61,18 @@ public class ProductMain {
                     break;
                 case 4:
                     Collections.sort(productsList, new QuantityComparator());
+                    break;
+                    case 5:
+                        Collections.sort(productsList, new Comparator<Product>() {
+                            @Override
+                            public int compare(Product o1, Product o2) {
+                                return o1.getQuantity()>o2.getQuantity() ? -1 : 1;
+                            }
+                        });
+                        break;
+            case 6:
+                    Comparator<Product> comparatorIdDesc = (o1,o2) -> o1.getId() > o2.getId() ? -1 : 1;
+                    Collections.sort(productsList, comparatorIdDesc);
                     break;
                 default:
                     System.out.println("Invalid choice");

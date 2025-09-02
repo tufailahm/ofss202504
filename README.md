@@ -1202,8 +1202,26 @@ JDBC
 ------
 Java database connectivity
 
+Table
+
+accountNumber
+customerName
+mobileNumber
+balance
+
 
 Project
+
+Step 1 : Load the appropriate driver
+
+Map<Key,Value>
+
+HashMap
+TreeMap
+LinkedHashMap
+HashTable	- not  thread safe
+
+
 
 
 

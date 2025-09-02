@@ -1,5 +1,7 @@
 package com.training.util;
 
+import java.math.BigDecimal;
+
 class Object{
     static {
         System.out.println("Object Static");
@@ -35,6 +37,9 @@ class Food  extends Product1{
     }
     public Food(){
         System.out.println("Food Constructor");
+    }
+
+    public Food(String cake, BigDecimal bigDecimal) {
     }
 }
 

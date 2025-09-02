@@ -22,7 +22,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "\nAccount{" +
                 "accountNumber=" + accountNumber +
                 ", customerName='" + customerName + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +

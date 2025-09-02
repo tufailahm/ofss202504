@@ -2,7 +2,9 @@ package com.training;
 
 import com.training.dao.AccountDAO;
 import com.training.dao.AccountDAOImpl;
+import com.training.exceptions.InvalidAmountException;
 import com.training.model.Account;
+import com.training.model.AuthenticateAccountBalance;
 import com.training.util.OracleDBConnection;
 
 import java.sql.Connection;
@@ -15,7 +17,7 @@ import java.util.Scanner;
  */
 public class App 
 {
-    public static void main( String[] args ) throws SQLException {
+    public static void main( String[] args ) {
 
         Scanner  sc = new Scanner(System.in);
         AccountDAO accountDAO = new AccountDAOImpl();
@@ -28,7 +30,9 @@ public class App
             System.out.println("3. Update Account");
             System.out.println("4. Delete Account");
             System.out.println("5. Search Account");
-            System.out.println("6. Exit");
+            System.out.println("6. Transfer Money");
+
+            System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -50,6 +54,8 @@ public class App
                     }
                     else {
                         Account account = new  Account(accNo, name, mobile, balance);
+
+
                         accountDAO.createAccount(account);
                         System.out.println("Account created successfully");
 
@@ -67,10 +73,46 @@ public class App
                         System.out.println(account);
                     }
                     else {
-                        System.out.println("Account does not exsits");
+                        System.out.println("Account does not exists");
                     }
                     break;
                 case 6:
+                    int faccno = 0;
+                    int taccno = 0;
+                    double bal = 0;
+
+                    System.out.println("Enter from account Number:");
+                    faccno = sc.nextInt();
+                    System.out.println("Enter to account number:");
+                    taccno = sc.nextInt();
+                    System.out.println("Enter amount:");
+                    bal = sc.nextDouble();
+
+                    try {
+                        if(bal<0)
+                            //bring an exception
+                        {
+                            throw new InvalidAmountException("Negative amount is not allowed");
+                        }
+                    } catch (InvalidAmountException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+
+                    if(accountDAO.isAccountExists(faccno)!=true || accountDAO.isAccountExists(taccno)!=true){
+                        System.out.println("Account doesn't exist");
+                    }
+                    else{
+                        boolean ans = accountDAO.transfer(faccno,taccno,bal);
+                        if(ans == true){
+                            System.out.println("Transfer success");
+                        }
+                        else{
+                            System.out.println("Error in transfer");
+                        }
+                    }
+                    break;
+                case 0:
 
                     sc.close();
                     System.out.println("Exiting... Goodbye!");
