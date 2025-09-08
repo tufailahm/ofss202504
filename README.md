@@ -1216,13 +1216,14 @@ Step 1 : Load the appropriate driver
 
 Map<Key,Value>
 
-HashMap
-TreeMap
-LinkedHashMap
+HashMap ( not ord)
+TreeMap (sorted)
+LinkedHashMap ( ordered as you enter)
 HashTable	- not  thread safe
 
 
 
+Anonymous inner classes
 
 
 
@@ -1304,6 +1305,388 @@ HashTable	- not  thread safe
 
 
 
+
+
+
+
+
+
+ java.util.InputMismatchException
+
+
+
+try
+catch
+finally
+
+
+
+Two types of exception
+
+Checked 
+
+
+Unchecked
+Arithmetic
+Nullpointer
+
+
+
+throw
+throws
+
+
+CustomException
+
+
+
+
+Threading
+-----------------
+
+Thread	run
+Runnable	run
+
+
+Hands on :
+
+ Enter your name : ( 20 seconds) : Tufail
+
+Welcome , Tufail
+
+Better Luck next time
+
+
+
+Debugging
+IO
+Modules
+Annotations
+
+
+
+
+
+
+
+
+
+I/O
+
+
+Input	- read
+Output 	- write
+
+
+FileInput
+
+ObjectInputStream FileInputStream
+
+Stream
+
+	FileInputStream
+
+
+Reader
+
+	FileReader
+
+
+File
+
+Seri
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+JSON and REST
+--------------------------
+
+Java script Object 
+
+Language independent
+
+
+Web Application	->	End User
+
+
+
+
+amazon		->	ICICIBank
+JSON	
+
+
+Well formed JSON
+
+
+Rules for JSON
+
+1) 
+
+[
+    {
+        "employeeid": 1010,
+        "employeename": "Tufail",
+        "salary": 12000
+    },
+    {
+        "employeeid": 1010,
+        "employeename": "Tufail",
+        "salary": 22000
+    }
+]
+
+2) [
+    {
+        "employeeid": [
+            1010,
+            1012
+        ],
+        "employeename": [
+            "Tufail",
+            "Neha"
+        ],
+        "salary": [
+            12000,
+            22000
+        ]
+    }
+]
+
+
+3. Hands on
+
+Create a JSON file to store accounts details like
+
+private  int   accountNumber;
+ private String customerName;
+    private String mobileNumber;
+            private double balance;
+
+3 bank customers
+
+
+Quick Checklist for Well-Formed JSON ✅
+Rule	Requirement
+Root element	Must be {} or []
+Key names	Always in double quotes " "
+String values	Always in double quotes " "
+Numbers	No leading zeros, valid decimals
+Boolean & null	Must be true, false, null
+Commas	No trailing commas
+Nesting	Properly balanced {} and []
+Duplicates	Avoid duplicate keys
+Encoding	UTF-8 only
+
+
+{
+    "accounts": [
+        {
+            "accountNumber": 1001,
+            "customerName": "Alex",
+            "mobileNumber": "982387263",
+            "balance": -1001.3
+        },
+        {
+            "accountNumber": 1021,
+            "mobileNumber": "93387263",
+            "balance": -1004.3
+        },
+        {
+            "customerName": "Alexe",
+            "mobileNumber": "987263",
+            "balance": 1239812398123981
+        }
+    ]
+}
+
+
+Invalid according to schema
+
+JSON Schema
+
+{ 
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        }  ,
+          "empname": {
+            "description": "emp name",
+            "type": "string"
+        }  },
+	    "required": ["id","empname"]
+}
+	
+
+------
+
+{
+  "id":98,
+    "empname":"Yamini"
+}
+
+
+
+
+** Please install postman
+
+
+{
+"type": "array",
+"properties":{
+"balance": {
+	"type": "number",
+	"minimum": 0
+},
+"accountNumber": {
+	"type": "string"
+},
+"customerName": {
+	"type": "string"
+},
+"mobileNumber": {
+	"type": ["string", "number"]
+}
+},
+"required": ["accountNumber", "customerName", "mobileNumber", "balance"]
+}
+
+---------------------------------------
+
+[
+        {
+            "accountNumber": 1001,
+            "customerName": "Alex",
+            "mobileNumber": "982387263",
+            "balance": -1001.3
+        },
+        {
+            "accountNumber": 1021,
+            "customerName": "Alex",
+            "mobileNumber": "93387263",
+            "balance": -1004.3
+        },
+        {
+           "accountNumber": 1021,
+            "customerName": "Alexe",
+            "mobileNumber": "987263",
+            "balance": 1239812398123981
+        }
+    ]
+
+
+
+
+
+
+
+
+Hands on : 
+
+1) Mobile Number must of 10 digits
+2) Not other fields are allowed.
+
+
+
+
+
+REST
+-----------
+Representational State Transfer
+
+Restful Web Services
+
+Application		     -->		Application
+			<--JSON-->
+
+Postman					Softbank-RestAPI
+
+
+Way 1
+
+http://localhost:9090/softbank/api/accounts/saveAccounts
+http://localhost:9090/softbank/api/accounts/updateAccounts
+http://localhost:9090/softbank/api/accounts/deleteAccounts
+
+
+Way 2
+
+http://localhost:9090/softbank/api/accounts				- GET		[ get all accoounts]
+http://localhost:9090/softbank/api/accounts/{accountNumber}		- GET		[ get a accoount]
+http://localhost:9090/softbank/api/accounts/{accountNumber}		-DELETE		[ delete a account]
+http://localhost:9090/softbank/api/accounts				- PUT		[ update]
+http://localhost:9090/softbank/api/accounts				- POST		[ create]
+http://localhost:9090/softbank/api/accounts/transfer/{from}/{to}/{amount}	- PUT		[ transfer]
+http://localhost:9090/softbank/api/accounts/transfer/			- PUT		[ transfer]
+
+http://localhost:9090/softbank/api/accounts?mobileNumber=10919181		- GET		[ get all accoounts]
+
+
+Spring Boot
+----------------------
+Rest
+
+
+
+
+
+
+Hands on :
+
+http://localhost:9090/softbank/api/accounts/10001			- GET		[ get a account]
+
+http://localhost:9090/softbank/api/accounts/add/12/12			- GET		[ get the sum ]
+
+http://localhost:9090/softbank/api/accounts/random/		- GET		[ get the random number between 1 and 100]
+
+http://localhost:9090/softbank/api/accounts/random/900/960	- GET	  [ get the random number between 900 and 960]
+
+
+
+HTTP CODES
+--------------------
+
+200	- success	
+201	- create
+		**		204	- not content
+300	- redirection
+400	- r
+
+
+
+Types of variables in REST
+----------------------------------
+
+Query parameters
+Path parameters
+Header parameters
+Body parameters
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.5</version> <!-- Use the latest stable version -->
+        </dependency>
+
+
+
+http://localhost:9090/swagger-ui/index.html
+
+
+
+
+http://localhost:9090/softbank/api/assets/
 
 
 

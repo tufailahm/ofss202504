@@ -1,7 +1,8 @@
-package com.training.dao;
+package com.training.softbankrestapi.dao;
 
-import com.training.model.Account;
-import com.training.util.OracleDBConnection;
+
+import com.training.softbankrestapi.model.Account;
+import com.training.softbankrestapi.util.OracleDBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class AccountDAOImpl implements AccountDAO {
     private static  final String CREATE_ACCOUNT_QUERY = "insert into accounts values ( ?, ?, ?, ?)";
     private final String FETCH_ACCOUNT_BALANCE = "select BALANCE from Accounts where ACCOUNT_NUMBER=?";
     private final String UPDATE_ACCOUNT_BALANCE = "update Accounts set BALANCE=? where ACCOUNT_NUMBER=?";
+    private static final String SELECT_QUERY = "SELECT account_number, customer_name, mobile_number, balance FROM accounts WHERE mobile_number = ?";
 
 
     private static Logger logger =
@@ -42,6 +44,40 @@ public class AccountDAOImpl implements AccountDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Account> getAccount(String mobileNumber) {
+        List<Account> accounts = new ArrayList<>();
+
+        PreparedStatement ps = null ;
+        try
+        {
+            ps = con.prepareStatement(SELECT_QUERY);
+            // Set mobile number parameter
+            ps.setString(1, mobileNumber);
+
+            // Execute query
+             ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Account account = new Account(
+                            rs.getInt("account_number"),
+                            rs.getString("customer_name"),
+                            rs.getString("mobile_number"),
+                            rs.getDouble("balance")
+                    );
+                    accounts.add(account);
+                }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        return accounts;
     }
 
 

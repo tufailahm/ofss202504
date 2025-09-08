@@ -1,4 +1,4 @@
-package com.training.model;
+package com.training.softbankrestapi.model;
 
 import java.io.Serializable;
 import java.util.Objects;

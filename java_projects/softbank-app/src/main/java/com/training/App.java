@@ -7,9 +7,11 @@ import com.training.model.Account;
 import com.training.model.AuthenticateAccountBalance;
 import com.training.util.OracleDBConnection;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 /**
  * Hello world!
@@ -18,7 +20,11 @@ import java.util.Scanner;
 public class App 
 {
     public static void main( String[] args ) {
-
+        try {
+            LogManager.getLogManager().readConfiguration(new FileInputStream("E:\\Trainings\\2025\\6..OFSS\\ofss202504\\java_projects\\softbank-app\\src\\main\\resources\\logging.properties"));
+        } catch (IOException e) {
+            e.printStackTrace(); // Print any issues to the console
+        }
         Scanner  sc = new Scanner(System.in);
         AccountDAO accountDAO = new AccountDAOImpl();
 
@@ -31,6 +37,7 @@ public class App
             System.out.println("4. Delete Account");
             System.out.println("5. Search Account");
             System.out.println("6. Transfer Money");
+            System.out.println("7. Display Account Details from File");
 
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
@@ -70,6 +77,17 @@ public class App
                      accNo = sc.nextInt();
                     if(accountDAO.isAccountExists(accNo)){
                        Account account = accountDAO.getAccount(accNo);
+                       //store in a file
+                        try {
+                            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("c:\\softbanklogs\\account.dat"));
+                            os.writeObject(account);
+                            System.out.println("Account created successfully and stored in a file");
+                            os.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
                         System.out.println(account);
                     }
                     else {
@@ -111,6 +129,21 @@ public class App
                             System.out.println("Error in transfer");
                         }
                     }
+                    break;
+                case 7:
+                    try {
+                        ObjectInputStream readOS = new ObjectInputStream(new FileInputStream("c:\\softbanklogs\\account.dat"));
+                        Account acc = (Account) readOS.readObject();
+                        readOS.close();
+
+                        System.out.println(acc);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                     break;
                 case 0:
 

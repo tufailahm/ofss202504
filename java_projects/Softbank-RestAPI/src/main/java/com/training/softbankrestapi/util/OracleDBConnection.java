@@ -1,4 +1,4 @@
-package com.training.util;
+package com.training.softbankrestapi.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
