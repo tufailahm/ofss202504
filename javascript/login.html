@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+        function validate() {
+            //var username = document.getElementById('username');
+            var username = document.forms[0].elements[0];
+            var password = document.getElementById('password');
+
+            if (username.value.length == 0) {
+                alert("Please enter your username")
+                return false;
+            }
+            else if (password.value.length == 0) {
+                alert("Please enter your password")
+                return false;
+            }
+        }
+    </script>
+    <script src="manageCookie.js"></script>
+</head>
+
+<body>
+    <h3>Softbank Login </h3>
+    <form action="success.html" onsubmit="validate()">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td>* Username : </td>
+                <td><input type="text" name="username" id="username"></td>
+            </tr>
+            <tr>
+                <td>* Password : </td>
+                <td><input type="password" name="password" id="password"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Login" ></td>
+                <td><input type="reset" value="Clear"></td>
+            </tr>
+        </table>
+    </form>
+
+    <br />
+    <br />
+    <br />
+    <a href="index.html">Home</a>
+</body>
+
+</html>

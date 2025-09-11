@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script>
+        function changeImage(img){
+            document.images[0].src= img;
+        }
+    </script>
+</head>
+<body>
+    <img src="open.png" 
+    onmouseover="changeImage('close.png')" 
+     onmouseout="changeImage('open.png')">
+</body>
+</html>

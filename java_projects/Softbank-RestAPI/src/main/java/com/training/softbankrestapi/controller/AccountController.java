@@ -23,6 +23,13 @@ public class AccountController {
         return "Hello OFSS";
     }
 
+
+
+    @GetMapping("message")         //http://localhost:9090/softbank/api/accounts/message
+    public String sayMessage(){
+        return "Hello Good morning";
+    }
+
     @GetMapping          //  http://localhost:9090/softbank/api/accounts
    // http://localhost:9090/softbank/api/accounts?mobileNumber=
     public List<Account> getAccounts(@RequestParam(value = "mobileNumber", required = false)String  mobileNumber){

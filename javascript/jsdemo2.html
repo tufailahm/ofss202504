@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js"></script>
+    <script>
+        function calculate(name, city, marks) {
+            alert("Welcome :" + name);
+            var i, j;
+            i = prompt("Enter num1 :")
+            j = prompt("Enter num2 :")
+            alert(parseInt(i) + parseInt(j))
+            return "Hi :"+name;
+        }
+        function display(){
+            result = calculate('Rohit');
+            console.log("Result : "+ result);
+        }
+
+    </script>
+</head>
+
+<body onload="display()">
+    <button onclick="calculate('neha')">Add Numbers1</button><br />
+    <button onclick="calculate('abcd','pune')">Add Numbers2</button><br />
+    <button onclick="alert(`Sum of 9 + 6 is  : ${9+6}`)">Add Numbers3</button><br />
+</body>
+
+</html>

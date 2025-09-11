@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="manageCookie.js"></script>
+    <script>
+        function saveDetails() {
+            var firstName = document.forms[0].elements[0];
+            var lastName = document.forms[0].elements[1];
+            var mobileNumber = document.forms[0].elements[2];
+
+            setCookie("firstName", firstName.value);
+            setCookie("lastName", lastName.value);
+            setCookie("mobileNumber", mobileNumber.value);
+            alert(firstName.value + " you details saved");
+        }
+
+        function loadValues() {
+            var firstname = getCookie('firstName');
+            document.getElementById("firstname").value = firstname;
+            var lastname = getCookie('lastName');
+            document.getElementById("lastname").value = lastname;
+            var mobileNumber = getCookie('mobileNumber');
+            document.getElementById("mobilenumber").value = mobileNumber;
+        }
+    </script>
+</head>
+
+<body onload="loadValues()">
+    <h3>Softbank Register </h3>
+    <form action="success.html" onsubmit="return saveDetails()">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td>First Name : </td>
+                <td><input type="text" name="fistname" id="firstname"></td>
+            </tr>
+            <tr>
+                <td>Last Name : </td>
+                <td><input type="text" name="lastname" id="lastname" onblur="alert('Hi')"></td>
+            </tr>
+            <tr>
+                <td>Mobile Number : </td>
+                <td><input type="number" name="mobilenumber" id="mobilenumber"></td>
+            </tr>
+            <tr>
+                <td>Password : </td>
+                <td><input type="password" name="password" id="password"></td>
+            </tr>
+            <tr>
+                <td>Reset Password : </td>
+                <td><input type="password" name="confirmpassword" id="confirmpassword"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Register"></td>
+                <td><input type="reset" value="Clear"></td>
+
+            </tr>
+        </table>
+
+        <br />
+        <br />
+        <br />
+        <a href="index.html">Home</a>
+</body>
+
+</html>

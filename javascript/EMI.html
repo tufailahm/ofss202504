@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+        function validate(event) {
+            event.preventDefault(); 
+
+            var principal = document.getElementById('principal');
+            var tenure = document.getElementById('tenure');
+            var interest = document.getElementById('interest');
+            var result = document.getElementById('result');
+
+            result.style.display = "none";
+
+            if (principal.value.length == 0) {
+                document.getElementById('errPrincipal').innerHTML = "<font color=red>Please enter Principal amount";
+                return false;
+            }
+            if (tenure.value.length == 0) {
+                document.getElementById('errTenure').innerHTML = "<font color=red>Please enter Tenure";
+                return false;
+            }
+            if (interest.value.length == 0) {
+                document.getElementById('errInterest').innerHTML = "<font color=red>Please enter Interest";
+                return false;
+            }
+
+            var p = parseFloat(principal.value);
+            var t = parseFloat(tenure.value);
+            var r = parseFloat(interest.value) / 100 / 12; 
+
+            var emi = (p * r * Math.pow(1 + r, t)) / (Math.pow(1 + r, t) - 1);
+
+            result.style.display = "block";
+            result.innerHTML = "Your Monthly EMI is: <b>₹" + emi.toFixed(2) + "</b>";
+
+            return false; 
+        }
+
+        function clearError(id) {
+            document.getElementById(id).innerHTML = "";
+        }
+    </script>
+</head>
+
+<body>
+    <h3>Softbank EMI Calculator</h3>
+    <form onsubmit="return validate(event)">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td>Principal:</td>
+                <td>
+                    <input type="number" name="principal" id="principal" oninput="clearError('errPrincipal')">
+                </td>
+                <td><span id="errPrincipal"></span></td>
+            </tr>
+            <tr>
+                <td>Tenure (in months):</td>
+                <td>
+                    <input type="number" name="tenure" id="tenure" oninput="clearError('errTenure')">
+                </td>
+                <td><span id="errTenure"></span></td>
+            </tr>
+            <tr>
+                <td>Interest (% per annum):</td>
+                <td>
+                    <input type="number" name="interest" id="interest" oninput="clearError('errInterest')">
+                </td>
+                <td><span id="errInterest"></span></td>
+            </tr>
+             <tr>
+                <td>Result:</td>
+                <td>
+                    <input type="number" >
+                </td>
+                <td><span id="errInterest"></span></td>
+            </tr>
+            <tr>
+                <td>
+                    <p id="result" style="color:green; font-weight:bold;"></p>
+                </td>
+                
+            </tr>
+          
+        </table>
+    </form>
+
+    
+</body>
+</html>

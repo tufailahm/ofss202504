@@ -1692,3 +1692,308 @@ http://localhost:9090/softbank/api/assets/
 
 
 
+CI/CD
+-------------
+
+
+Create 	--> Build(jar/war)	--> maven lifecycle --> 
+
+
+compile
+validate
+test
+install
+package
+
+
+
+
+Create our project
+Git 
+mvn package		- build jar
+
+
+CI /CD
+
+
+
+What we need
+
+Project	
+	git repo		
+
+https://github.com/tufailahm/Softbank-RestAPI
+https://github.com/tufailahm/Softbank-RestAPI.git
+
+
+git 
+
+maven
+
+
+jenkins
+
+
+OFSSJDK
+
+
+
+
+A release pipeline in Jenkins refers to an automated process designed to build, test, and deploy software from version control to various environments (e.g., development, staging, production) in a continuous and controlled manner. This process is often implemented using Jenkins Pipeline, which utilizes a domain-specific language (DSL) to define the pipeline stages and steps "as code" within a Jenkinsfile.
+Key aspects of a Jenkins release pipeline include:
+Pipeline-as-Code:
+The entire release process is defined in a Jenkinsfile, a text file stored in the project's source control repository alongside the application code. This provides version control, auditability, and reusability of the pipeline definition.
+
+Stages and Steps:
+The pipeline is broken down into distinct stages (e.g., build, test, deploy to staging, deploy to production), with each stage containing a series of steps (e.g., compiling code, running unit tests, deploying artifacts).
+Continuous Delivery:
+The goal is to enable continuous delivery, where every change committed to source control can potentially be released to users after passing through the defined pipeline stages.
+Automation:
+The pipeline automates repetitive tasks involved in the release process, reducing manual errors and increasing efficiency.
+Integration:
+Jenkins can integrate with various tools for source code management (e.g., Git), build tools (e.g., Maven, Gradle), testing frameworks, and deployment platforms.
+Artifact Management:
+The pipeline handles the creation, storage, and management of release artifacts, ensuring that the correct versions are deployed.
+Triggering:
+Pipelines can be triggered manually, automatically upon code changes (e.g., using SCM polling or webhooks), or on a scheduled basis.
+
+
+
+
+
+
+
+
+
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "OFSSMaven"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/tufailahm/Softbank-RestAPI.git'
+
+                // Run Maven on a Unix agent.
+            //    sh "mvn -Dmaven.test.failure.ignore=true clean package"
+
+                // To run Maven on a Windows agent, use
+                 bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+  	failure {
+                   echo "Build failed, please check "
+                }
+            }
+        }
+    }
+}
+
+-----------------
+
+
+
+pipeline {
+    agent any
+
+    tools {
+        // Use Maven configured in Jenkins as "OFSSMaven"
+        maven "OFSSMaven"
+    }
+
+    environment {
+        // Custom JAR name using Jenkins Build Number
+        PROJECT_NAME = "Softbank-RestAPI"
+        NEW_JAR_NAME = "Softbank-RestAPI-${BUILD_NUMBER}.jar"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo "🔄 Checking out code from GitHub..."
+                git 'https://github.com/tufailahm/Softbank-RestAPI.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "⚡ Building Maven Project..."
+                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
+
+        stage('Rename JAR') {
+            steps {
+                script {
+                    echo "📦 Renaming JAR file..."
+                    // Find the generated JAR file (ignore original-*.jar)
+                    def originalJar = bat(script: 'for /f "delims=" %i in (\'dir /b target\\*.jar ^| findstr /v "original"\') do @echo %i', returnStdout: true).trim()
+
+                    // Rename it with BUILD_NUMBER
+                    bat "rename target\\${originalJar} ${NEW_JAR_NAME}"
+
+                    echo "✅ JAR renamed to: ${NEW_JAR_NAME}"
+                }
+            }
+        }
+
+
+        stage('Archive Artifact') {
+            steps {
+                echo "📤 Archiving JAR..."
+                archiveArtifacts artifacts: "target/${NEW_JAR_NAME}", fingerprint: true
+            }
+        }
+        stage('Copy to h:\ofssapp') {
+            steps {
+                echo "📤 Archiving JAR..."
+                archiveArtifacts artifacts: "target/${NEW_JAR_NAME}", fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build Successful!"
+            junit '**/target/surefire-reports/TEST-*.xml'
+        }
+        failure {
+            echo "❌ Build Failed! Please check the logs."
+        }
+    }
+}
+
+
+
+
+
+Javascript
+---------------
+
+client side validation framework
+add dynamic capabilities to your page
+
+
+Hands on : Create a external javascript file to accept a number a return true or false, if matched.
+
+The function randomly generate the number and check with the parameter.
+
+
+Expected Outcome :
+
+The magic number is : 9
+Enter number (3 attempts ) : 7
+Sorry , try again
+Enter number (2 attempts ) : 6
+Sorry , try again
+Enter number (1 attempts ) : 4
+Game Over , Lost
+---------------------
+Game won if  number is guessed correctly
+
+
+
+Hands on :  Display Image  and upon hovering the image should change 
+
+
+Open eyes should be closed upon hovering
+
+
+
+
+Communicating with a Remote Server
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

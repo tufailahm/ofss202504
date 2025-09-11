@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        var selectedOption;
+        function onChangeToSelectList(dropdown, dropdownFrom) {
+            const selectedValue = dropdown.value;
+            // Get selected text
+            const selectedText = dropdown.options[dropdown.selectedIndex].text;
+            selectedOption = selectedValue;
+            alert("Selected option : " + selectedOption);
+
+            len1 = dropdownFrom.options.length;
+            for (i = 0; i < len1; i++) {
+                if (dropdownFrom.options[i].value == selectedOption) {
+                    alert("Removed option : " + dropdownFrom.options[i]);
+                    dropdownFrom.options[i] = null;
+                    break;
+                }
+            }
+        }
+        function onChangeFromSelectList(sel1) {
+
+        }  
+    </script>
+</head>
+
+<body>
+    <form>
+        <br>
+        To : <select id="toSelectList" name="toSelectList"
+            onchange="onChangeToSelectList(this,this.form.fromSelectList)">
+            <option value="pune" selected="selected">Pune</option>
+            <option value="chennai">Chennai</option>
+            <option value="bangalore">Bangalore</option>
+        </select>
+        From <select id="fromSelectList" name="fromSelectList">
+            <option value="pune" >Pune</option>
+            <option value="chennai" selected="selected">Chennai</option>
+            <option value="bangalore">Bangalore</option>
+        </select>
+    </form>
+</body>
+
+</html>

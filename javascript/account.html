@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Account</title>
+    <style>
+        h3 {
+            color: red;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+    <h3>Open Account Form</h3>
+    <h3 style="color: beige;">Please fill the form carefully</h3>
+    
+    <h3 class="highlight">Balance should not be negative</h3>
+    <h2 class="highlight">Account number should be 10 digits</h2>
+
+    <!-- Account Opening Form -->
+    <form action="success.html">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td>Account Number</td>
+                <td><input type="text" name="accountNumber"  id="accountNumber"  placeholder="Account Number"></td>
+            </tr>
+            <tr>
+                <td>Customer Name</td>
+                <td><input type="text" name="customerName"  id="customerName"  placeholder="Customer Name"></td>
+            </tr>
+            <tr>
+                <td>Mobile Number</td>
+                <td><input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobile Number"></td>
+            </tr>
+                <tr>
+                <td>Balance</td>
+                <td><input type="text" name="balance" id="balance" placeholder="Mobile Number"></td>
+            </tr>
+            <hr/>
+            <tr>
+                <td>Gender</td>
+                <td>
+                    <input type="radio" name="gender" value="male" id="male"><label for="male">Male</label>
+                    <input type="radio" name="gender" value="female" id="female"><label for="female">Female</label>
+                    <input type="radio" name="gender" value="other" id="other"><label for="other">Other</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Type of Account</td>
+                <td>
+                    <select name="accountType">
+                        <option value="1">Savings</option>
+                        <option value="2">Current</option>
+                        <option value="3" selected>D
+                            
+                            mat</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Account Facilities</td>
+                <td>
+                    <input type="checkbox" name="facilities" value="atm" id="atm"><label for="atm">ATM</label>
+                    <input type="checkbox" name="facilities" value="debitCard" id="debitCard"><label for="debitCard">Debit Card</label>
+                    <input type="checkbox" name="facilities" value="internetBanking" id="internetBanking"><label for="internetBanking">Internet Banking</label>
+                    <input type="checkbox" name="facilities" value="chequeBook" id="chequeBook"><label for="chequeBook">Cheque Book</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Open Account</button></td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <br/>
+    <a href="index.html">Home</a>
+</body>
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMI Calculator</title>
+  <script>
+    function validateField(index, errId, msg) {
+      let field = document.forms[0].elements[index];
+      if (field.value.trim() === "") {
+        document.getElementById(errId).innerHTML = "<font color=red>" + msg + "</font>";
+        return false;
+      } else {
+        document.getElementById(errId).innerHTML = "";
+        return true;
+      }
+    }
+
+    function calculateEMI() {
+      let p = document.forms[0].elements[0].value.trim(); 
+      let n = document.forms[0].elements[1].value.trim(); 
+      let r = document.forms[0].elements[2].value.trim(); 
+
+      if (p === "" || n === "" || r === "") {
+        document.forms[0].elements[3].value = "";
+        return;
+      }
+
+      p = parseFloat(p);
+      n = parseInt(n);
+      r = parseFloat(r) / 12 / 100; 
+
+      let emi;
+      if (r === 0) {
+        emi = p / n;
+      } else {
+        emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      }
+
+      document.forms[0].elements[3].value = emi.toFixed(2);
+    }
+  </script>
+</head>
+<body>
+  <form>
+    <table>
+      <tr>
+        <td>Principal Amount:</td>
+        <td>
+          <input type="number" 
+                 oninput="validateField(0,'errprincipal','Please enter the principal amount'); calculateEMI();">
+        </td>
+        <td><span id="errprincipal"></span></td>
+      </tr>
+      <tr>
+        <td>Tenure (months):</td>
+        <td>
+          <input type="number" 
+                 oninput="validateField(1,'errtenure','Please enter the tenure'); calculateEMI();">
+        </td>
+        <td><span id="errtenure"></span></td>
+      </tr>
+      <tr>
+        <td>Interest rate (% annual):</td>
+        <td>
+          <input type="number" 
+                 oninput="validateField(2,'errinterest','Please enter the interest'); calculateEMI();">
+        </td>
+        <td><span id="errinterest"></span></td>
+      </tr>
+      <tr>
+        <td>Result (EMI):</td>
+        <td><input type="text" readonly></td>
+      </tr>
+    </table>
+  </form>
+</body>
+</html>

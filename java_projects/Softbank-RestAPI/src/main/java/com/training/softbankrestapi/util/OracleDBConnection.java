@@ -8,7 +8,7 @@ public class OracleDBConnection {
 
     public static Connection getConnection(){
         Connection conn = null;
-
+    //hello
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");       //loading the driver
             //creating the connection

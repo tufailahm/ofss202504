@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic To & From Dropdowns</title>
+    <script type="text/javascript">
+        // Store all original options
+        const allCities = [
+            { value: "pune", text: "Pune" },
+            { value: "chennai", text: "Chennai" },
+            { value: "bangalore", text: "Bangalore" }
+        ];
+
+        // Function to rebuild a dropdown with updated options
+        function rebuildDropdown(dropdown, selectedValue) {
+            dropdown.innerHTML = ""; // Clear existing options
+
+            for (let city of allCities) {
+                // Hide the selected city from the other dropdown
+                if (city.value !== selectedValue) {
+                    let option = document.createElement("option");
+                    option.value = city.value;
+                    option.text = city.text;
+                    dropdown.add(option);
+                }
+            }
+        }
+
+        // When "To" dropdown changes
+        function onChangeToSelectList(dropdown) {
+            const fromDropdown = document.getElementById("fromSelectList");
+            rebuildDropdown(fromDropdown, dropdown.value);
+
+            // If previously selected value in "From" is removed, reset it
+            if (fromDropdown.options.length > 0) {
+                fromDropdown.selectedIndex = 0;
+            }
+        }
+
+        // When "From" dropdown changes
+        function onChangeFromSelectList(dropdown) {
+            const toDropdown = document.getElementById("toSelectList");
+            rebuildDropdown(toDropdown, dropdown.value);
+
+            // If previously selected value in "To" is removed, reset it
+            if (toDropdown.options.length > 0) {
+                toDropdown.selectedIndex = 0;
+            }
+        }
+
+        // Initialize dropdowns on page load
+        window.onload = function () {
+            const toDropdown = document.getElementById("toSelectList");
+            const fromDropdown = document.getElementById("fromSelectList");
+
+            // Set default selections
+            toDropdown.value = "pune";
+            fromDropdown.value = "chennai";
+
+            // Build both dropdowns initially
+            rebuildDropdown(fromDropdown, toDropdown.value);
+            rebuildDropdown(toDropdown, fromDropdown.value);
+        };
+    </script>
+</head>
+
+<body>
+    <form>
+        <label for="toSelectList">To:</label>
+        <select id="toSelectList" name="toSelectList" onchange="onChangeToSelectList(this)">
+            <option value="pune">Pune</option>
+            <option value="chennai">Chennai</option>
+            <option value="bangalore">Bangalore</option>
+        </select>
+
+        <label for="fromSelectList">From:</label>
+        <select id="fromSelectList" name="fromSelectList" onchange="onChangeFromSelectList(this)">
+            <option value="pune">Pune</option>
+            <option value="chennai">Chennai</option>
+            <option value="bangalore">Bangalore</option>
+        </select>
+    </form>
+</body>
+</html>
