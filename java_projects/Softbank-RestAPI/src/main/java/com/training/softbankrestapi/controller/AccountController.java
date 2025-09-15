@@ -35,7 +35,7 @@ public class AccountController {
     public List<Account> getAccounts(@RequestParam(value = "mobileNumber", required = false)String  mobileNumber){
         List<Account> list = new ArrayList<>();
         if(mobileNumber == null){
-            list = accountDAO.getAccount();
+            list =accountDAO.getAccount();
         }
         else {
               list = accountDAO.getAccount(mobileNumber);     //select * from accounts
@@ -45,7 +45,7 @@ public class AccountController {
 
     //WELCOME USER BY NAME
     @GetMapping("name/{nn}")   // http://localhost:9090/softbank/api/accounts/name/naina
-    public String welcome(@RequestHeader("ofss")String company, @PathVariable("nn")String name)
+    public String welcome(@RequestHeader(value = "ofss", required = false)String company, @PathVariable("nn")String name)
     {
         return "Welcome , " +name+" You are in location :"+company;
     }

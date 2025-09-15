@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function checkCookie(cookieName) {
+            counter = 1001;
+            cookieValue = getCookie(cookieName);
+            if (cookieValue == "") {
+                document.getElementById("result").innerHTML = counter;
+            }
+            else {
+                document.getElementById("result").innerHTML = cookieValue;
+                counter = cookieValue;
+            }
+
+        }
+        function getCookie(name) {
+            if (document.cookie.length > 0) {
+                ind = document.cookie.indexOf(name);
+                if (ind != -1) {
+                    ind = ind + name.length + 1;
+                    ind1 = document.cookie.indexOf(";", ind);
+                    if (ind1 == -1)
+                        ind1 = document.cookie.length;
+                    return unescape(document.cookie.substring(ind, ind1));
+                }
+            }
+            return "";
+        }
+        function saveCookie(data) { //1002
+            var d = new Date();
+            d.setDate(d.getDate() + 7);
+            //save it in the cookie
+            document.cookie = "counter=" + escape(data) + ";expires=" + d.toGMTString();
+        }
+        function increment() {
+            //1001
+            counter = counter + 1;
+            document.getElementById("result").innerHTML = counter;
+            //1002
+            saveCookie(counter);
+
+        }
+        function decrement() {
+            //1001
+            counter = counter - 1;
+            document.getElementById("result").innerHTML = counter;
+            //1002
+            saveCookie(counter);
+
+        }
+    </script>
+</head>
+
+<body onload="checkCookie('counter')">
+    <form>
+        <h2>Counter program</h2>
+        Counter : <span id="result"></span>
+        <br />
+        <br />
+        <br />
+        <input type="button" value="Increment" onclick="increment()"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" value="Decrement" onclick="decrement()">
+    </form>
+</body>
+
+</html>
+
+
+
+
+
+
+

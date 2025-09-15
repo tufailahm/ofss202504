@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //why do need custom object
+        //what is custom object ?
+        // how to create 
+        function Customer(firstName, balance) {
+            this.firstName = firstName;
+            this.balance = balance;
+            this.fetchBalance = getBalance;
+        }
+
+        function getBalance() {
+                console.log(this.firstName+ " your balance is :"+this.balance);
+        }
+
+        customer = new Customer("Aparna",600000);
+        customer.fetchBalance();
+
+    
+    </script>
+</head>
+
+<body>
+
+
+</body>
+
+</html>

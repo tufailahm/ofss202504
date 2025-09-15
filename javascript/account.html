@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,29 @@
             color: red;
         }
     </style>
-    <link rel="stylesheet" href="styles.css"/>
+    <script src="manageCookie.js"></script>
+    <script src="manageRemoteServer.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+        function saveAccountType(accountType) {
+            const selectedValue = accountType.value;
+//            const selectedText = accountType.options[accountType.selectedIndex].text;
+//           setCookie("accountType", selectedText);
+            setCookie("accountTypeValue", selectedValue);
+        }
+        function checkCookie() {
+                document.getElementById('accountType').value = getCookie('accountTypeValue')
+                document.getElementById('customerName').value = getCookie('firstName')
+                document.getElementById('balance').value = getDataFromRemoteServer('balance.txt');
+        }
+
+    </script>
 </head>
-<body>
+
+<body onload="checkCookie()">
     <h3>Open Account Form</h3>
     <h3 style="color: beige;">Please fill the form carefully</h3>
-    
+
     <h3 class="highlight">Balance should not be negative</h3>
     <h2 class="highlight">Account number should be 10 digits</h2>
 
@@ -23,21 +41,21 @@
         <table cellspacing="10" cellpadding="10">
             <tr>
                 <td>Account Number</td>
-                <td><input type="text" name="accountNumber"  id="accountNumber"  placeholder="Account Number"></td>
+                <td><input type="text" name="accountNumber" id="accountNumber" placeholder="Account Number"></td>
             </tr>
             <tr>
                 <td>Customer Name</td>
-                <td><input type="text" name="customerName"  id="customerName"  placeholder="Customer Name"></td>
+                <td><input type="text" name="customerName" id="customerName" placeholder="Customer Name"></td>
             </tr>
             <tr>
                 <td>Mobile Number</td>
                 <td><input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobile Number"></td>
             </tr>
-                <tr>
+            <tr>
                 <td>Balance</td>
-                <td><input type="text" name="balance" id="balance" placeholder="Mobile Number"></td>
+                <td><input type="text" name="balance" id="balance" placeholder="balance"></td>
             </tr>
-            <hr/>
+            <hr />
             <tr>
                 <td>Gender</td>
                 <td>
@@ -49,12 +67,10 @@
             <tr>
                 <td>Type of Account</td>
                 <td>
-                    <select name="accountType">
+                    <select name="accountType" id="accountType" onchange="saveAccountType(this)">
                         <option value="1">Savings</option>
                         <option value="2">Current</option>
-                        <option value="3" selected>D
-                            
-                            mat</option>
+                        <option value="3" selected>Demat</option>
                     </select>
                 </td>
             </tr>
@@ -62,9 +78,12 @@
                 <td>Account Facilities</td>
                 <td>
                     <input type="checkbox" name="facilities" value="atm" id="atm"><label for="atm">ATM</label>
-                    <input type="checkbox" name="facilities" value="debitCard" id="debitCard"><label for="debitCard">Debit Card</label>
-                    <input type="checkbox" name="facilities" value="internetBanking" id="internetBanking"><label for="internetBanking">Internet Banking</label>
-                    <input type="checkbox" name="facilities" value="chequeBook" id="chequeBook"><label for="chequeBook">Cheque Book</label>
+                    <input type="checkbox" name="facilities" value="debitCard" id="debitCard"><label
+                        for="debitCard">Debit Card</label>
+                    <input type="checkbox" name="facilities" value="internetBanking" id="internetBanking"><label
+                        for="internetBanking">Internet Banking</label>
+                    <input type="checkbox" name="facilities" value="chequeBook" id="chequeBook"><label
+                        for="chequeBook">Cheque Book</label>
                 </td>
             </tr>
             <tr>
@@ -72,9 +91,10 @@
             </tr>
         </table>
     </form>
-    <br/>
-    <br/>
+    <br />
+    <br />
     <a href="index.html">Home</a>
 </body>
 </body>
+
 </html>

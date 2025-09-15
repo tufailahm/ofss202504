@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Worker Demo</title>
+</head>
+<body>
+  <h1>Web Worker Example</h1>
+  <h3>User name : <input type="text" ></h3>
+  <button id="start">Start Worker</button>
+  <p>Result: <span id="result">-</span></p>
+
+  <script>
+    let worker;
+
+    document.getElementById("start").addEventListener("click", () => {
+      if (window.Worker) {
+        if (!worker) {
+          worker = new Worker("calc.js");
+        }
+
+        // send data to worker
+        worker.postMessage(9888888888889999); // big number to simulate heavy work
+
+        // receive result from worker
+        worker.onmessage = function (event) {
+          document.getElementById("result").textContent = event.data;
+        };
+      } else {
+        alert("Your browser does not support Web Workers.");
+      }
+    });
+  </script>
+</body>
+</html>

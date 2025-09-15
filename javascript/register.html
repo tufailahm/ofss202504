@@ -26,6 +26,13 @@
             document.getElementById("lastname").value = lastname;
             var mobileNumber = getCookie('mobileNumber');
             document.getElementById("mobilenumber").value = mobileNumber;
+
+            if (localStorage.getItem("token") == "123987123912312378") {
+                alert("You already logged in")
+            }
+            else {
+                alert("Please login to continue enjoy services")
+            }
         }
     </script>
 </head>

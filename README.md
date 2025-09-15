@@ -1926,6 +1926,8 @@ Communicating with a Remote Server
 
 
 
+Creating Objects and Methods by Using JavaScript
+------------------------------------------------------------------
 
 
 
@@ -1967,6 +1969,39 @@ Communicating with a Remote Server
 
 
 
+Testing
+---------------------------
+
+
+What is Testing ?
+
+
+expected
+actual
+
+
+@Test
+@DisplayName
+
+Stub Methods
+
+@BeforeAll
+@AfterAll
+@BeforeEach
+@AfterEach
+
+
+Ordering of tests
+-------------------------
+
+
+Parameterized testing
+----------------------------------
+
+
+
+Timeout
+Disable tests
 
 
 
@@ -1976,6 +2011,46 @@ Communicating with a Remote Server
 
 
 
+
+
+
+
+
+
+
+
+http://localhost:9090/swagger-ui/index.html
+
+
+
+
+
+pm.test("At least one product named Monitor exists", function () {
+    let products = pm.response.json();
+    let found = products.some(p => p.name === "Monitor");
+    pm.expect(found).to.be.true;
+});
+
+let jsonData = pm.response.json();
+
+pm.test("Product response has required fields", function () {
+    pm.expect(jsonData).to.have.property("id");
+    pm.expect(jsonData).to.have.property("name");
+    pm.expect(jsonData).to.have.property("price");
+    pm.expect(jsonData).to.have.property("quantity");
+});
+
+pm.test("Product name is 'Monitor'", function () {
+    pm.expect(jsonData.name).to.eql("Monitor");
+});
+
+pm.test("Product price is 9000", function () {
+    pm.expect(jsonData.price).to.eql(9000);
+});
+
+pm.test("Product quantity is 20", function () {
+    pm.expect(jsonData.quantity).to.eql(20);
+});
 
 
 
