@@ -2,15 +2,16 @@ package com.training.dao;
 
 import com.training.model.Account;
 import com.training.util.OracleDBConnection;
+import com.training.util.PostgresDBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class AccountDAOImpl implements AccountDAO {
+public class AccountDAOLatestImpl implements AccountDAO {
 
-    Connection con = OracleDBConnection.getConnection();
+    Connection con ;
 
 
     private static  final String GET_ALL_ACCOUNTS = "select * from accounts";
@@ -22,7 +23,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 
     private static Logger logger =
-            Logger.getLogger(AccountDAOImpl.class.getName());
+            Logger.getLogger(AccountDAOLatestImpl.class.getName());
 
 
 

@@ -2055,6 +2055,278 @@ pm.test("Product quantity is 20", function () {
 
 
 
+Selenium
+
+
+      <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.34.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.11.0-RC1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
+
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.27.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.14.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
+Selenium automates web browsers
+
+
+
+
+//*[@id="APjFqb"]
+
+/html/body/div[2]/div[4]/form/div[1]/div[1]/div[1]/div[1]/div[2]/textarea
+
+
+
+
+
+Keyword : "diamond studded name plate"
+
+
+name plate
+
+
+
+
+
+
+
+
+<input type="text" id="twotabsearchtextbox" value="" name="field-keywords" autocomplete="off" placeholder="Search Amazon.in" class="nav-input nav-progressive-attribute" dir="auto" tabindex="0" aria-label="Search Amazon.in" role="searchbox" aria-autocomplete="list" aria-controls="sac-autocomplete-results-container" aria-expanded="true" aria-haspopup="grid" spellcheck="false">
+
+
+
+
+
+<input id="nav-search-submit-button" type="submit" class="nav-input nav-progressive-attribute" value="Go" tabindex="0">
+
+
+
+
+<h2 aria-label="Sponsored Ad - DLCCREATION Name Plate Personalised Stainless Steel 304 Quality Plate with Engraving and Color Filling with Diamond Studded Stud for Fixing Size : 30cm x 20cm" class="a-size-base-plus a-spacing-none a-color-base a-text-normal"><span>DLCCREATION Name Plate Personalised Stainless Steel 304 Quality Plate with Engraving and Color Filling with Diamond Studded Stud for Fixing Size : 30cm x 20cm</span></h2>
+
+
+<img class="s-image" src="https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL320_.jpg" srcset="https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL320_.jpg 1x, https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL480_FMwebp_QL65_.jpg 1.5x, https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL640_FMwebp_QL65_.jpg 2x, https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL800_FMwebp_QL65_.jpg 2.5x, https://m.media-amazon.com/images/I/61Pw1bPZbGL._AC_UL960_FMwebp_QL65_.jpg 3x" alt="Sponsored Ad - DLCCREATION Name Plate Personalised Stainless Steel 304 Quality Plate with Engraving and Color Filling with..." aria-hidden="true" data-image-index="1" data-image-load="" data-image-latency="s-product-image" data-image-source-density="1">
+
+
+
+
+
+BDD -- Behavior Driven Test
+----------------------------------------
+Cucumber testing
+
+Gherkin language
+
+Feature: Login functionality
+
+ Scenario: Successful login with valid credentials
+When user visits the web site
+Then user should navigate to login page
+And types username and password
+When user click on login button
+Then user should navigate to the home page
+
+
+Hands on :
+
+https://onlinetexttools.com/check-text-palindrome
+
+
+
+Check online for palindrome 
+
+
+Data Driven Testing
+-----------------------------
+
+
+10 words
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Spring Boot Fundamentals
+-------------------------------------
+
+
+
+
+Dependency Injection
+
+IOC
+
+
+Spring Boot
+------------------
+
+Spring + zero configuration
+Embedded Tomcat
+
+
+bean - 	object managed by spring container
+
+
+
+@Component
+@Bean
+@Configuration
+
+
+
+@Service
+@Repository
+@RestController
+
+
+
+
+http://localhost:9090/randomWeather
+http://localhost:9090/random
+http://localhost:9090/hello
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Use case : Manage expenses like CRUD 
+
+
+localhost:9090/expense
+
+Model
+
+
+GuestUser
+
+guestId
+guestName
+mobileNumber
+monthlyincome		
+monthyExpense		
+balance			
+
+
+
+
+Problem : Create table -- XX
+
+
+localhost:9090/expense	- CRUD
+
+
+Hands on 
+
+
+localhost:9090/expense	- POST
+localhost:9090/expense	- GET 	GET ALL
+
+
+Hands on :
+
+localhost:9090/expense/100	- GET BY GUEST ID
+localhost:9090/expense/100	- DELETE BY GUEST ID	DELETE
+localhost:9090/expense	- UPDATE (PUT)
+
+
+
+15 minutes 14:08 17-09-2025
+
+
+JPA custom methods
+
+
+Some requirements
+
+
+localhost:9090/expense/balance/10000				
+localhost:9090/expense/monthlyIncome/50
+localhost:9090/expense/searchByMobileNumber/19191919101
+localhost:9090/expense/searchByGuestName/Neha
+
+
+Hands on :
+Delete custom method to delete guest by mobileNumber
+
+http://localhost:9090/expense/mobile/9876543210	- DELETE
+
+
+
 
 
 

@@ -28,6 +28,7 @@ public class App
         Scanner  sc = new Scanner(System.in);
         AccountDAO accountDAO = new AccountDAOImpl();
 
+
         System.out.println("Welcome in ----------SOFT BANK");
         while (true) {
             System.out.println("\n===== ACCOUNT MANAGEMENT MENU =====");
