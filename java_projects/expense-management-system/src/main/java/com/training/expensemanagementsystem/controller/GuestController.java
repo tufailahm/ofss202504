@@ -1,13 +1,16 @@
 package com.training.expensemanagementsystem.controller;
 
 import com.training.expensemanagementsystem.dao.GuestDAO;
+import com.training.expensemanagementsystem.model.Account;
 import com.training.expensemanagementsystem.model.GuestUser;
 import com.training.expensemanagementsystem.service.GuestService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,20 +22,50 @@ public class GuestController {
     @Autowired
     GuestService guestService;
 
+    @Autowired
+    RestTemplate restTemplate ;
+
     @PostMapping
+    @CircuitBreaker(name = "myFirstCircuitBreaker" , fallbackMethod = "microserviceNotAvailable")
     public ResponseEntity<String> saveExpenseDetails(@RequestBody GuestUser guestUser)
     {
-        boolean result = guestService.saveGuest(guestUser);
-        if(result)
+        //check whether this guest
+        //1. Make Rest call to localhost:9090/softbank/api/accounts
+        //2. Get the data
+        ResponseEntity<Account> accountData =
+                restTemplate.getForEntity("http://localhost:9090/softbank/api/accounts/"+guestUser.getGuestId(), Account.class);
+        //3. Analyaze it and
+        if(guestUser.getGuestId()<0)
         {
-            return new ResponseEntity<String>("Expense added successfully", HttpStatusCode.valueOf(201));
+            throw new RuntimeException("Guest Id is invalid and cannot be negative");
+        }
+        if(accountData.getStatusCode() == HttpStatus.NO_CONTENT)
+        {
+            return new ResponseEntity<String>("You cannot have expense because you dont have account",
+                    HttpStatusCode.valueOf(200));
+        }
+        else  if(accountData.getBody().getBalance() < guestUser.getMonthlyExpense())
+        {
+            return new ResponseEntity<String>("Insufficient balance. Have balance before applying expense",
+                    HttpStatusCode.valueOf(200));
         }
         else {
-            return new ResponseEntity<String>("Your data incorrect", HttpStatusCode.valueOf(422));
-
+            boolean result = guestService.saveGuest(guestUser);
+            if(result)
+            {
+                return new ResponseEntity<String>("Expense added successfully", HttpStatusCode.valueOf(201));
+            }
+            else {
+                return new ResponseEntity<String>("Your data incorrect", HttpStatusCode.valueOf(422));
+            }
         }
     }
 
+
+    public ResponseEntity<String> microserviceNotAvailable(GuestUser guestUser,Throwable t) {
+
+        return new ResponseEntity<String>("Softbank service is currently unavailable. Please try again later.",HttpStatusCode.valueOf(200));
+    }
 
 
     @Autowired
@@ -83,11 +116,8 @@ public class GuestController {
     @GetMapping("/balance/{amount}")
     public ResponseEntity<List<GuestUser>> getBalance(@PathVariable double amount) {
         List<GuestUser> guestUsers = guestDAO.findByBalanceLessThan(amount);
-
         return ResponseEntity.ok(guestUsers);
     }
-
-
 
 
 

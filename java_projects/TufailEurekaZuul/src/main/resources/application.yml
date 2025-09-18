@@ -1,0 +1,21 @@
+server:
+  port: 9093
+spring:
+  application:
+    name: ofsszuuldemo
+zuul:
+  routes:
+    demo:
+      path: /getInterestRate
+      service-id: investments-app
+      strip-prefix: false
+    expense:
+       path: /expense/**
+       service-id: expense-management-system
+       strip-prefix: false
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

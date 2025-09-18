@@ -2344,3 +2344,45 @@ http://localhost:9090/expense/mobile/9876543210	- DELETE
 
 
 
+Micro services
+--------------------------
+
+
+expense	 - 9091		- Eureka Client
+softbank	-  9090		- Eureka Client
+
+
+Eureka Server	- 8761
+
+
+Spring Cloud
+
+
+
+
+Fallback
+--------------
+
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>4.0.0-M1</version>
+        </dependency>
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+

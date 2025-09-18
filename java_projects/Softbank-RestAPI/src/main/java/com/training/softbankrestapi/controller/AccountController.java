@@ -50,7 +50,7 @@ public class AccountController {
         return "Welcome , " +name+" You are in location :"+company;
     }
 
-    @GetMapping("{accountNumber}")
+    @GetMapping("{accountNumber}")      //localhost:9090/softbank/api/accounts/1000
     public ResponseEntity<Account> getAccount(@PathVariable int accountNumber) throws SQLException {
         ResponseEntity<Account> responseEntity;
        Account account = new Account();

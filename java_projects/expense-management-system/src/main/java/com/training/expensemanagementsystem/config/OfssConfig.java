@@ -4,6 +4,7 @@ import com.training.expensemanagementsystem.util.Person;
 import com.training.expensemanagementsystem.util.RandomGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class OfssConfig {
@@ -21,5 +22,11 @@ public class OfssConfig {
     @Bean
     public Person person1(){
         return new Person("Aryan");
+    }
+
+
+    @Bean
+    public RestTemplate  restTemplate() {
+        return new RestTemplate();
     }
 }
