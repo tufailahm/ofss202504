@@ -9,8 +9,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class ExpenseManagementSystemApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(ExpenseManagementSystemApplication.class, args);
     }
-
 }

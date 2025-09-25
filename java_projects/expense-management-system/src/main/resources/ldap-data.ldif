@@ -1,0 +1,63 @@
+
+# Organizational Unit
+dn: dc=example,dc=com
+objectClass: top
+objectClass: domain
+dc: example
+
+dn: ou=people,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+
+# Users
+dn: uid=neha,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Neha
+cn: Neha Singh
+uid: neha
+userPassword: tech
+
+dn: uid=tufail,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Tufail
+cn: Tufail Ahmed
+uid: tufail
+userPassword: ahmed
+
+dn: uid=admin,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Admin
+cn: Admin
+uid: admin
+userPassword: admin
+
+dn: uid=aryan,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Aryan
+cn: Aryan
+uid: aryan
+userPassword: secret
+
+# Groups
+dn: cn=USER,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: USER
+uniqueMember: uid=neha,ou=people,dc=example,dc=com
+uniqueMember: uid=tufail,ou=people,dc=example,dc=com
+
+dn: cn=ADMIN,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: ADMIN
+uniqueMember: uid=tufail,ou=people,dc=example,dc=com
+uniqueMember: uid=admin,ou=people,dc=example,dc=com
+
+dn: cn=CR,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: CR
+uniqueMember: uid=aryan,ou=people,dc=example,dc=com

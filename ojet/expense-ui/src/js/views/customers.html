@@ -1,0 +1,37 @@
+<div class="oj-hybrid-padding">
+  <oj-input-text id="customerId" value="C001">
+
+  </oj-input-text>
+
+  <br />
+  1 way <oj-input-text id="username" value="[[username]]">
+  </oj-input-text>
+
+  2 way <oj-input-text id="firstName" value="{{firstName}}">
+  </oj-input-text>
+
+  1 way  <oj-input-text id="lastName" value="{{lastName}}">
+  </oj-input-text>
+
+  <h2>Printing the values : </h2>
+
+      UserName : <oj-bind-text value="{{username}}"></oj-bind-text><br/>
+      FirstName : <oj-bind-text value="{{firstName}}"></oj-bind-text><br/>
+      LastName : <oj-bind-text value="[[lastName]]"></oj-bind-text><br/>
+
+
+      <oj-label for="customerType">Customer Type</oj-label>
+      <oj-select-single 
+      id="customerType" 
+      placeholder="select"
+      data="[[dataProvider]]" 
+      value="{{selectVal}}"
+      filter-on-typing="false">
+      </oj-select-single>	
+
+
+  <oj-button>
+    Click
+  </oj-button>
+
+</div>

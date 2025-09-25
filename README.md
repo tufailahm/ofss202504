@@ -2348,14 +2348,16 @@ Micro services
 --------------------------
 
 
-expense	 - 9091		- Eureka Client
-softbank	-  9090		- Eureka Client
-
-
+expense	 			- 9091		- Eureka Client
+softbank				- 9090		- Eureka Client
+investments -	 getInterestRate	- 9092		- Eureka Client		http://localhost:9092/getInterestRate
 Eureka Server	- 8761
 
+loan-app				-9093					http://localhost:9093/getInterestRate	
+									http://localhost:9093/expense/
 
-Spring Cloud
+
+Spring Cloud	- Zuul
 
 
 
@@ -2379,6 +2381,688 @@ Fallback
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+      @CircuitBreaker(name = "myFirstCircuitBreaker" , fallbackMethod = "microserviceNotAvailable")
+    public ResponseEntity<String> saveExpenseDetails(@RequestBody GuestUser guestUser)
+{
+	...
+	...
+
+    public ResponseEntity<String> microserviceNotAvailable(GuestUser guestUser,Throwable t) {
+
+        return new ResponseEntity<String>("Softbank service is currently unavailable. Please try again later.",HttpStatusCode.valueOf(200));
+    }
+
+
+Hands on : 
+Create a app called emi-app to calculate EMI like below :
+
+http://localhost:6788/calculateEMI/{duration}/{interest}/{principle}		- 6788
+
+http://localhost:9093/calculateEMI/{duration}/{interest}/{principle}		- Zuul app (Already have - configure)
+
+
+
+Spring Security
+-----------------------------
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+	@RequestMapping("")
+	public String index() {
+		return "Welcome in Home Page ";
+	}
+	@RequestMapping("/hello")
+	public String hello() {
+		return "Hello and welcome";
+	}
+}
+
+
+---
+
+
+
+@Service
+public class MyUserDetailsService implements UserDetailsService {
+
+	private static final Map<String, String> users = new HashMap<>();
+	static {
+		users.put("tufail", "{noop}ahmed");
+		users.put("neha", "{noop}a123");
+		users.put("harish", "{noop}jaay");
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		users.put("parth2", "{noop}gg");
+
+		String password = users.get(username);
+		if (password == null) {
+			throw new UsernameNotFoundException("User not found: " + username);
+		}
+		User user = new User(username, password, new ArrayList<>());
+		System.out.println("#### " + user);
+		return user;
+	}
+}
+
+
+
+
+		
+Case 1: Calculate EMI
+Case 2: Calculate EMI is down, try again after some time.
+
+1.	Register 6788 application in eureka server
+2.	Verify
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+package com.training.expensemanagementsystem.controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class ProductController {
+
+	@RequestMapping("")     //localhost:9091
+	public String index() {
+		return "index";
+	}
+	@RequestMapping("/hello")
+	public String hello() {
+		return "neha";
+	}
+	@RequestMapping("/viewAllProducts")
+	public String viewAllProducts() {
+		return "viewAllProducts";
+	}
+	@RequestMapping("/addProduct")
+	public String addProduct() {
+		return "addProduct";
+	}
+}
+
+
+
+addProduct.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>All Product</h2>
+</body>
+</html>
+
+
+
+
+------------------------------------------------------
+Logout and Customize Login name
+
+Welcome Aryan,
+
+------------------------------------------------------
+
+Hands on :
+
+1) Create a spring boot project named message-api
+
+web, devtools, spring security, jpa , thymeleaf, actuator, oracle driver
+
+application.properties
+jdbc
+http://localhost:9094/message
+
+message.html
+Today's message is : Good Afternoon
+
+2)  Add spring security so that nobody can access message.html without login.
+[	]
+[	]
+
+Login
+
+It has be authenticated with one user : tarun/abc123
+
+
+
+
+pom.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.training</groupId>
+    <artifactId>expense-management-system</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>expense-management-system</name>
+    <description>expense-management-system</description>
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>4.0.0-M1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+
+
+Step for LDAP
+
+Step 1 : pom.xml
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.example</groupId>
+    <artifactId>expense-management-system</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>expense-management-system</name>
+    <description>Expense Management System with LDAP + Security</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Web + Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+
+        <!-- LDAP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-ldap</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+            <version>6.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.ldap</groupId>
+            <artifactId>spring-ldap-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- AOP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- Dev Tools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+
+
+Step 2: application.properties
+
+spring.ldap.embedded.base-dn=dc=example,dc=com
+spring.ldap.embedded.ldif=classpath:ldap-data.ldif
+spring.ldap.embedded.port=8389
+
+spring.security.ldap.user-search-filter=(uid={0})
+spring.security.ldap.group-search-base=ou=groups
+spring.security.ldap.group-search-filter=(uniqueMember={0})
+
+
+Step 3: create data.ldif file inside resources
+
+
+
+# Organizational Unit
+dn: dc=example,dc=com
+objectClass: top
+objectClass: domain
+dc: example
+
+dn: ou=people,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+
+# Users
+dn: uid=neha,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Neha
+cn: Neha Singh
+uid: neha
+userPassword: tech
+
+dn: uid=tufail,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Tufail
+cn: Tufail Ahmed
+uid: tufail
+userPassword: ahmed
+
+dn: uid=admin,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Admin
+cn: Admin
+uid: admin
+userPassword: admin
+
+dn: uid=aryan,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+sn: Aryan
+cn: Aryan
+uid: aryan
+userPassword: secret
+
+# Groups
+dn: cn=USER,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: USER
+uniqueMember: uid=neha,ou=people,dc=example,dc=com
+uniqueMember: uid=tufail,ou=people,dc=example,dc=com
+
+dn: cn=ADMIN,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: ADMIN
+uniqueMember: uid=tufail,ou=people,dc=example,dc=com
+uniqueMember: uid=admin,ou=people,dc=example,dc=com
+
+dn: cn=CR,ou=groups,dc=example,dc=com
+objectClass: groupOfUniqueNames
+cn: CR
+uniqueMember: uid=aryan,ou=people,dc=example,dc=com 
+
+Step 4:
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .ldapAuthentication()
+                .userDnPatterns("uid={0},ou=people")  // embedded LDAP users
+                .groupSearchBase("ou=groups")
+                .contextSource()
+                .url("ldap://localhost:8389/dc=example,dc=com")
+                .and()
+                .passwordCompare()
+                .passwordEncoder(NoOpPasswordEncoder.getInstance())
+                .passwordAttribute("userPassword");
+    }
+
+//comment other jdbc code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ojet
+----------------------
+
+Node :https://nodejs.org/en
+
+npm install -g @oracle/ojet-cli
+
+
+ojet create expense-ui --template=navdrawer
+
+
+
+
+
+define(
+  [],
+  function () {
+    function CustomerViewModel() {
+
+    }
+    return CustomerViewModel;
+  })
+
+
+Steps for single select
+
+
+1.     'ojs/ojselectsingle',
+             'ojs/ojarraydataprovider'
+
+  function (ko,InputText, Button, SelectSingle, ArrayDataProvider) {
+
+this.customerType = [
+        { value: 'O', label: 'Permanent' },
+        { value: 'C', label: 'Contractual' },
+        { value: 'F', label: 'Freelance' },
+        { value: 'V', label: 'Vendor' }
+      ];
+
+      this.dataProvider = new ArrayDataProvider(this.customerType,{
+              keyAttributes: 'value'
+
+      })
+
+      this.selectVal = 'F';
+
+
+HTML
+
+
+      <oj-label for="customerType">Customer Type</oj-label>
+      <oj-select-single 
+      id="customerType" 
+      placeholder="select"
+      data="[[dataProvider]]" 
+      value="{{selectVal}}">
+      </oj-select-single>	
+
+
+
+Validation in OJET
+--------------------------------------
+
+** all fields are mandatory
+** mobile number = 10
+** mobile number should be only digit
+** Monthly Expense, balance, monthly income should be positive
+** save expense -- disabled
+
+
+Case - Study
+------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

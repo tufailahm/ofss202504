@@ -1,0 +1,56 @@
+<h2>Add/Modify Expenses</h2>
+
+<oj-validation-group id="expenseForm" on-valid-changed="[[groupValidChanged]]">
+
+
+    <oj-form-layout label-edge="start" max-columns="2" direction="row" class="oj-md-margin-4x">
+
+        <oj-input-text id="guestId" value="{{guestId}}" label-hint="Guest ID" required="true"
+            on-raw-value-changed="[[checkFormValidity]]">
+        </oj-input-text>
+
+        <oj-input-text id="guestName" value="{{guestName}}" label-hint="Guest Name" required="true"
+        on-raw-value-changed="[[checkFormValidity]]"
+        async-validators ="[[ [nameLengthValidator]  ]]">
+        </oj-input-text>
+
+        <oj-input-text id="mobileNumber" value="{{mobileNumber}}" label-hint="Mobile Number"
+         required="true"
+            validators="[[ [mobileValidator] ]]"
+            on-raw-value-changed="[[checkFormValidity]]">
+        </oj-input-text>
+
+        <oj-input-text id="monthlyincome" 
+        value="{{monthlyIncome}}" 
+        label-hint="Monthly Income " on-raw-value-changed="[[checkFormValidity]]" required="true">
+        </oj-input-text>
+
+        <oj-input-text id="monthlyexpense" value="{{monthlyexpense}}" 
+        label-hint="Monthly Expense" 
+        on-raw-value-changed="[[checkFormValidity]]"
+        required="true">
+        </oj-input-text>
+
+        <oj-input-text id="balance" value="{{balance}}" 
+        label-hint="Balance"  required="true"
+        on-raw-value-changed="[[checkFormValidity]]">
+        </oj-input-text>
+
+
+        <oj-button id="submitBtn" on-oj-action="[[saveExpense]]" disabled="[[isFormInvalid]]">
+            Save Expense
+        </oj-button>
+
+        <oj-button id="submitBtn" on-oj-action="[[updateExpense]]">
+            Update Expense
+        </oj-button>
+    </oj-form-layout>
+</oj-validation-group>
+
+
+
+<h2>
+    <oj-bind-text value="{{message}}">
+
+    </oj-bind-text><br />
+</h2>

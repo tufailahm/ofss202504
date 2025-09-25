@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+    @Autowired
     RandomGenerator getRandomGenerator2;
 
     @GetMapping("randomWeather")      // localhost:9090/random
