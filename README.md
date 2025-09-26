@@ -3026,6 +3026,13 @@ Case - Study
 ------------------
 
 
+    <oj-input-text id="mobileNumber"
+                   label-hint="Mobile Number"
+                   value="{{mobileNumber}}"
+                   required="true"
+                   validators="[[ [mobileValidator] ]]"
+                   on-raw-value-changed="[[checkFormValidity]]">
+    </oj-input-text>
 
 
 
@@ -3042,6 +3049,91 @@ Case - Study
 
 
 
+
+
+
+
+
+REST using OJet
+-----------------------
+
+Save and Fetch all expenses from Rest Endpoint
+-------------------------------------------------------------
+
+Step 1: 
+
+   .requestMatchers("/expense").permitAll()
+                .requestMatchers("/expense/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/expense", "/expense/*").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/expense").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/expense/*").permitAll()
+
+Step 2: started 
+
+SoftBank-RestAPI			:9090
+Expense-management-system	:9091
+
+http://localhost:9091/expense
+http://localhost:9091/expense
+
+
+
+
+
+
+
+Step 1: @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8000" })
+
+
+
+Step 2:
+
+define(
+    ['knockout',
+        'ojs/ojrestdataprovider',
+        'ojs/ojinputtext',
+        'ojs/ojinputnumber',
+        'ojs/ojformlayout',
+        'ojs/ojtable',
+    ],
+    function (ko) {
+        function ListExpenseViewModel() {
+
+            this.url = "http://localhost:9091/expense";
+            this.dataprovider = ko.observable(null);
+
+            loadExpense = () =>  {
+                this.dataprovider = new RESTDataProvider.RESTDataProvider({
+                    keyAttributes: this.keyAttributes,
+                    url: this.url,
+                    transforms: {
+                        fetchFirst: {
+                            request: async (options) => {
+                                const url = new URL(options.url);
+                                return new Request(url.href);
+                            },
+                            response: async ({ body }) => {
+                                console.log("BODY :" + body);
+                                return { data: body };
+                            },
+                        },
+                    },
+                });
+                console.log("####Load visitor called :" + this.dataprovider)
+            }
+
+            this.loadExpense(); //onLoad
+        }
+        return ListExpenseViewModel;
+    })
+
+
+
+
+
+
+
+Model and Collection in OJET
 
 
 

@@ -1,3 +1,27 @@
+<h2>Listing all the expenses - Latest </h2>
+
+
+
+<oj-table id="table" data="[[dataProvider]]" 
+    columns='[{"headerText": "Guest Id",
+		 "field": "guestId"},
+		{"headerText": "Guest Name",
+		 "field": "guestName"},
+		{"headerText": "Mobile Number",
+		 "field": "mobileNumber"},
+		{"headerText": "Monthly Income",
+		 "field": "monthlyIncome"},
+         {"headerText": "Monthly Income",
+		 "field": "monthlyExpense"},
+         {"headerText": "Balance",
+		 "field": "balance"}]'>
+</oj-table>
+
+<hr />
+<br />
+
+
+
 <h2>Add/Modify Expenses</h2>
 
 <oj-validation-group id="expenseForm" on-valid-changed="[[groupValidChanged]]">

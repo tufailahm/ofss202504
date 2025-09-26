@@ -1,6 +1,12 @@
 define(
     [
         'knockout',
+
+        'ojs/ojtable',
+        'ojs/ojmodel',
+        'collections/ExpenseCollection',
+        'ojs/ojcollectiondataprovider',
+
         'ojs/ojasyncvalidator-length',
         'ojs/ojvalidator-regexp',
         'ojs/ojinputtext',
@@ -8,10 +14,31 @@ define(
         'ojs/ojvalidationgroup',
         'ojs/ojbutton'
     ],
-    function (ko, AsyncLengthValidator, RegExpValidator) {
+    function (ko, ojtable, ojmodel, ExpenseCollection, CollectionDataProvider, AsyncLengthValidator, RegExpValidator) {
         function ExpenseFormViewModel() {
 
             var self = this;
+
+
+            // Collection
+            self.collection = new ExpenseCollection();
+            self.dataProvider = ko.observable();
+
+            self.collection.fetch({
+                success: function () {
+                    self.dataProvider(new CollectionDataProvider(self.collection));
+                    console.log("Data loaded");
+                    self.collection.each(function (model) {
+                        console.log(model.toJSON());
+
+                    });
+                },
+                error: function (jqXHR, textStatus) {
+                    console.error("Fetch error:", textStatus);
+                }
+            });
+
+
 
             this.guestId = ko.observable();
             this.guestName = ko.observable();
@@ -69,7 +96,36 @@ define(
                     return;
                 }
                 else {
-                    this.message(this.guestName() + " your expense Details Saved successfully")
+                    // Save the expense using the REST endpoint
+                    alert("Saving now");
+
+                    var newExpense = {
+                        guestId: self.guestId(),
+                        guestName: self.guestName(),
+                        mobileNumber: self.mobileNumber(),
+                        monthlyIncome: self.monthlyIncome(),
+                        monthlyExpense: self.monthlyexpense(), // make sure casing matches your observable
+                        balance: self.balance()
+                    };
+
+                    self.collection.create(newExpense, {
+                        wait: true,
+                        success: function () {
+                            // use self here, not this
+                            self.message(self.guestName() + " your expense details saved successfully");
+
+                            alert(self.guestName() + " registered successfully");
+
+                            // Optionally close dialog
+                            // document.getElementById("addDialog").close();
+                        },
+                        error: function (model, xhr) {
+                            console.error("Save failed", xhr);
+                            alert("Failed to save expense: " + xhr.statusText);
+                        }
+                    });
+
+
                 }
 
             }

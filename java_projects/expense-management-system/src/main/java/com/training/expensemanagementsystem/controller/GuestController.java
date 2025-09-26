@@ -12,11 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("expense")
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8000" })
 public class GuestController {
 
     @Autowired
@@ -26,41 +29,44 @@ public class GuestController {
     RestTemplate restTemplate ;
 
     @PostMapping
-    @CircuitBreaker(name = "myFirstCircuitBreaker" , fallbackMethod = "microserviceNotAvailable")
-    public ResponseEntity<String> saveExpenseDetails(@RequestBody GuestUser guestUser)
-    {
-        //check whether this guest
-        //1. Make Rest call to localhost:9090/softbank/api/accounts
-        //2. Get the data
+    @CircuitBreaker(name = "myFirstCircuitBreaker", fallbackMethod = "microserviceNotAvailable")
+    public ResponseEntity<Map<String, Object>> saveExpenseDetails(@RequestBody GuestUser guestUser) {
+
+        // Make REST call to accounts service
         ResponseEntity<Account> accountData =
-                restTemplate.getForEntity("http://localhost:9090/softbank/api/accounts/"+guestUser.getGuestId(), Account.class);
-        //3. Analyaze it and
-        if(guestUser.getGuestId()<0)
-        {
+                restTemplate.getForEntity("http://localhost:9090/softbank/api/accounts/" + guestUser.getGuestId(), Account.class);
+
+        // Validate guestId
+        if (guestUser.getGuestId() < 0) {
             throw new RuntimeException("Guest Id is invalid and cannot be negative");
         }
-        if(accountData.getStatusCode() == HttpStatus.NO_CONTENT)
-        {
-            return new ResponseEntity<String>("You cannot have expense because you dont have account",
-                    HttpStatusCode.valueOf(200));
-        }
-        else  if(accountData.getBody().getBalance() < guestUser.getMonthlyExpense())
-        {
-            return new ResponseEntity<String>("Insufficient balance. Have balance before applying expense",
-                    HttpStatusCode.valueOf(200));
-        }
-        else {
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (accountData.getStatusCode() == HttpStatus.NO_CONTENT) {
+            response.put("status", "failed");
+            response.put("message", "You cannot have expense because you don’t have an account");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } else if (accountData.getBody().getBalance() < guestUser.getMonthlyExpense()) {
+            response.put("status", "failed");
+            response.put("message", "Insufficient balance. Have balance before applying expense");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } else {
             boolean result = guestService.saveGuest(guestUser);
-            if(result)
-            {
-                return new ResponseEntity<String>("Expense added successfully", HttpStatusCode.valueOf(201));
-            }
-            else {
-                return new ResponseEntity<String>("Your data incorrect", HttpStatusCode.valueOf(422));
+            if (result) {
+                response.put("status", "success");
+                response.put("message", "Expense added successfully");
+                response.put("guestId", guestUser.getGuestId());
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            } else {
+                response.put("status", "failed");
+                response.put("message", "Your data is incorrect");
+                return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
             }
         }
     }
-
 
     public ResponseEntity<String> microserviceNotAvailable(GuestUser guestUser,Throwable t) {
 
